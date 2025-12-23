@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8000/api";
+const API_BASE_URL = "https://fashion-server-uz16.onrender.com/api";
 
 export const createSliderImage = async (formData) => {
   const config = {
