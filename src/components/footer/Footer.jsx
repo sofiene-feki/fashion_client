@@ -13,7 +13,7 @@ export default function Footer() {
             </h4>
             <div className="text-sm text-gray-50 space-y-3 leading-relaxed ">
               <p>
-                <strong>Address:</strong> 6 Rue 2 Mars 1934, Hammam-Lif, Tunisia
+                <strong>Address:</strong> 6 Rue 2 Mars 1934, Sousse, Tunisia
               </p>
               <p>
                 <strong>Phone:</strong>{" "}
@@ -31,7 +31,7 @@ export default function Footer() {
 artisanatbargaoui.com"
                   className="hover:underline text-[#87a736] transition-colors"
                 >
-                  artisanatbargaoui@gmail.com
+                  contact@rsmode.com
                 </a>
               </p>
             </div>

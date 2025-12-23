@@ -13,6 +13,8 @@ export default function HomeVideoSection({
   subtitle = "Scroll to discover our universe",
 }) {
   const videoRef = useRef(null);
+
+  // UI mirror state (video is source of truth)
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
 
@@ -21,43 +23,75 @@ export default function HomeVideoSection({
     triggerOnce: false,
   });
 
-  /* ▶️ Auto play + sound ON when visible */
+  /* ----------------------------------------
+     🔄 SYNC STATE FROM VIDEO
+  ---------------------------------------- */
   useEffect(() => {
-    if (!videoRef.current) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    const syncPlay = () => setPlaying(!video.paused);
+    const syncMute = () => setMuted(video.muted);
+
+    video.addEventListener("play", syncPlay);
+    video.addEventListener("pause", syncPlay);
+    video.addEventListener("volumechange", syncMute);
+
+    // Initial sync (page reload safe)
+    syncPlay();
+    syncMute();
+
+    return () => {
+      video.removeEventListener("play", syncPlay);
+      video.removeEventListener("pause", syncPlay);
+      video.removeEventListener("volumechange", syncMute);
+    };
+  }, []);
+
+  /* ----------------------------------------
+     ▶️ AUTO PLAY + SOUND ON
+  ---------------------------------------- */
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
 
     if (inView) {
-      videoRef.current.muted = false; // 🔊 sound ON
+      video.muted = false; // 🔊 SOUND ON
       setMuted(false);
 
-      videoRef.current
-        .play()
-        .then(() => setPlaying(true))
-        .catch(() => {});
+      const playPromise = video.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Browser blocked sound autoplay → fallback
+          video.muted = true;
+          setMuted(true);
+          video.play().catch(() => {});
+        });
+      }
     } else {
-      videoRef.current.pause();
-      videoRef.current.muted = true;
+      // ⬇️ When scrolled past
+      video.pause();
+      video.muted = true;
       setMuted(true);
-      setPlaying(false);
     }
   }, [inView]);
 
+  /* ----------------------------------------
+     🎛 CONTROLS
+  ---------------------------------------- */
   const togglePlay = () => {
-    if (!videoRef.current) return;
+    const video = videoRef.current;
+    if (!video) return;
 
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-      setPlaying(true);
-    } else {
-      videoRef.current.pause();
-      setPlaying(false);
-    }
+    video.paused ? video.play() : video.pause();
   };
 
   const toggleMute = () => {
-    if (!videoRef.current) return;
+    const video = videoRef.current;
+    if (!video) return;
 
-    videoRef.current.muted = !videoRef.current.muted;
-    setMuted(videoRef.current.muted);
+    video.muted = !video.muted;
   };
 
   return (
@@ -65,24 +99,25 @@ export default function HomeVideoSection({
       ref={ref}
       className="relative w-full max-h-[400px] overflow-hidden bg-black"
     >
-      {/* 🎥 VIDEO BACKGROUND */}
+      {/* 🎥 VIDEO */}
       <video
         ref={videoRef}
         src={rsVideo}
         loop
         playsInline
+        preload="metadata"
         className="w-full h-[400px] object-cover"
       />
 
-      {/* DARK OVERLAY */}
+      {/* 🌑 OVERLAY */}
       <div className="absolute inset-0 bg-black/35 pointer-events-none" />
 
-      {/* CONTENT */}
-      <div className="absolute inset-0 z-10 flex items-end px-2 md:px-10 pb-4">
+      {/* 📌 CONTENT */}
+      <div className="absolute inset-0 z-10 flex items-end px-4 md:px-10 pb-4">
         <div className="w-full flex items-end justify-between gap-6">
-          {/* TEXT — LEFT */}
+          {/* TEXT */}
           <div className="max-w-xl text-white">
-            <h2 className="text-2xl md:text-3xl font-serif tracking-wide leading-tight">
+            <h2 className="text-2xl md:text-3xl font-serif tracking-wide">
               {title}
             </h2>
             <p className="mt-1 text-xs md:text-sm text-white/70 tracking-widest uppercase">
@@ -90,16 +125,16 @@ export default function HomeVideoSection({
             </p>
           </div>
 
-          {/* CONTROLS — RIGHT */}
+          {/* CONTROLS */}
           <div className="flex items-center gap-3">
             <button
               onClick={togglePlay}
               className="
-            flex items-center gap-2 px-4 py-2 rounded-full
-            bg-white/20 backdrop-blur-xl
-            border border-white/30 text-white
-            hover:bg-white/30 transition
-          "
+                flex items-center gap-2 px-4 py-2 rounded-full
+                bg-white/20 backdrop-blur-xl
+                border border-white/30 text-white
+                hover:bg-white/30 transition
+              "
             >
               {playing ? (
                 <PauseIcon className="w-4 h-4" />
@@ -114,11 +149,11 @@ export default function HomeVideoSection({
             <button
               onClick={toggleMute}
               className="
-            p-2.5 rounded-full
-            bg-white/20 backdrop-blur-xl
-            border border-white/30 text-white
-            hover:bg-white/30 transition
-          "
+                p-2.5 rounded-full
+                bg-white/20 backdrop-blur-xl
+                border border-white/30 text-white
+                hover:bg-white/30 transition
+              "
             >
               {muted ? (
                 <SpeakerXMarkIcon className="w-4 h-4" />
