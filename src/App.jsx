@@ -49,7 +49,6 @@ function App() {
                 style={{ width: "auto", height: "100px" }}
               />
             </div>
-            <p style={{ marginTop: "10px" }}>Artisanat Bargaoui</p>
           </div>
         }
       >
