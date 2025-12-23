@@ -19,7 +19,7 @@ export default function BestSellers() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const API_BASE_URL_MEDIA = import.meta.env.VITE_API_BASE_URL_MEDIA;
+  const API_BASE_URL_MEDIA = "https://fashion-server-uz16.onrender.com";
 
   const normalizeMediaSrc = (input) => {
     if (!input) return input;

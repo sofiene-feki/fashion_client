@@ -20,7 +20,7 @@ export default function Product({ product, productsPerPage, loading }) {
     ? mainMedia.src
     : "https://via.placeholder.com/300";
   const imageAlt = mainMedia ? mainMedia.alt : product.name;
-  const API_BASE_URL_MEDIA = import.meta.env.VITE_API_BASE_URL_MEDIA;
+  const API_BASE_URL_MEDIA = "https://fashion-server-uz16.onrender.com";
 
   const settings = {
     dots: true,

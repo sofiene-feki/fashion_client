@@ -22,7 +22,7 @@ import { useInView } from "react-intersection-observer";
 
 export default function Story() {
   const { userInfo, isAuthenticated } = useSelector((state) => state.user);
-  const API_BASE_URL_MEDIA = import.meta.env.VITE_API_BASE_URL_MEDIA;
+  const API_BASE_URL_MEDIA = "https://fashion-server-uz16.onrender.com";
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);

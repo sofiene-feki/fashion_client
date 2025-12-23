@@ -27,7 +27,7 @@ export default function Banner() {
   };
 
   const [slides, setSlides] = useState([]);
-  const API_BASE_URL_MEDIA = import.meta.env.VITE_API_BASE_URL_MEDIA; // temp, change to prod URL
+  const API_BASE_URL_MEDIA = "https://fashion-server-uz16.onrender.com"; // temp, change to prod URL
 
   const normalizeBannerSrc = (input) => {
     if (!input) return input;
