@@ -1,7 +1,3 @@
-import medico from "../assets/product/medico.webp";
-import venise from "../assets/product/venise.webp";
-import soft from "../assets/product/soft.jpg";
-
 export const products = [
   {
     id: 4,
