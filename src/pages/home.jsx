@@ -1,0 +1,38 @@
+import Banner from "../components/home/Banner";
+import BannerBottom from "../components/home/BannerBottom";
+import BestSellers from "../components/home/BestSellers";
+import Category from "../components/home/Category";
+import ModelViewer from "../components/home/ModelViewer";
+import NewArrivals from "../components/home/NewArrivals";
+import SpecialOffer from "../components/home/SpecialOffer";
+import React from "react";
+import bg from "../assets/bg.jpg";
+import Story from "../components/home/Story";
+import Packs from "../components/home/Packs";
+import HomeVideoSection from "../components/home/HomeVideoSection";
+
+export default function Home() {
+  return (
+    <div
+      className="bg-cover bg-center bg-no-repeat"
+      style={{
+        // backgroundImage: `url(${bg})`,
+        backgroundColor: "#fff", // fallback color
+        backgroundAttachment: "fixed", // makes background fixed
+      }}
+    >
+      <Banner />
+      {/* <NewArrivals /> */}
+      {/* <SpecialOffer /> */}
+      {/* <Packs /> */}
+      <BestSellers />
+      <HomeVideoSection
+        poster="/images/video-poster.jpg"
+        title="RS MODE"
+        subtitle="A new vision of elegance"
+      />
+
+      <Story />
+    </div>
+  );
+}
