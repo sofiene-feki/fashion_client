@@ -40,7 +40,7 @@ export default function Product({ product, loading }) {
     autoplay: true,
     fade: true,
     speed: 800,
-    autoplaySpeed: 6000,
+    autoplaySpeed: 3500,
     appendDots: (dots) => (
       <div className="pb-2">
         <ul className="flex justify-center gap-1">{dots}</ul>

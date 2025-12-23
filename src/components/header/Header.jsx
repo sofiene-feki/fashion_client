@@ -115,12 +115,12 @@ export default function Header() {
           className={`absolute inset-0 flex items-center justify-center transition-all duration-700 pointer-events-none`}
         >
           <p
-            className={`font-luxury transition-all duration-700 transform text-4xl ${
+            className={`font-serif transition-all duration-700 transform text-3xl ${
               isHome
                 ? isScrolled
-                  ? "text-xl scale-75 text-black translate-x-[-125px] md:translate-x-[-520px]"
-                  : "text-6xl md:text-9xl mt-20 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] md:mt-50 text-white scale-100 translate-x-0"
-                : "text-xl text-black scale-75 translate-x-[-70px] md:translate-x-[-500px]"
+                  ? "text-xl scale-75 text-black translate-x-[-110px] md:translate-x-[-520px]"
+                  : "text-4xl md:text-9xl mt-20 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] md:mt-50 text-white scale-100 translate-x-0"
+                : "text-xl text-black scale-75 translate-x-[-110px] md:translate-x-[-500px]"
             }`}
           >
             RS MODE

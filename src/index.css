@@ -140,3 +140,41 @@ button:focus-visible {
 .cinematic-zoom {
   animation: cinematicZoom 2s ease-out forwards;
 }
+
+@keyframes scrollPushUp {
+  0% {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(12px);
+    margin-top: 0;
+  }
+
+  30% {
+    max-height: 24px;
+    opacity: 1;
+    transform: translateY(0);
+    margin-top: 8px;
+  }
+
+  70% {
+    max-height: 24px;
+    opacity: 1;
+    transform: translateY(0);
+    margin-top: 8px;
+  }
+
+  100% {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-4px);
+    margin-top: 0;
+  }
+}
+
+.animate-scroll-push {
+  overflow: hidden;
+  opacity: 0; /* 🔒 hidden initially */
+  max-height: 0; /* 🔒 no space initially */
+  animation: scrollPushUp 3.6s ease-in-out 2 forwards;
+  animation-delay: 3.5s; /* ⏱️ wait before appearing */
+}

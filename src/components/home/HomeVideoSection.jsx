@@ -14,86 +14,116 @@ export default function HomeVideoSection({
 }) {
   const videoRef = useRef(null);
   const [playing, setPlaying] = useState(false);
-  const [muted, setMuted] = useState(false); // 🔊 SOUND ON
+  const [muted, setMuted] = useState(true);
 
-  const { ref, inView } = useInView({ threshold: 0.5 });
+  const { ref, inView } = useInView({
+    threshold: 0.5,
+    triggerOnce: false,
+  });
 
+  /* ▶️ Auto play + sound ON when visible */
   useEffect(() => {
     if (!videoRef.current) return;
 
     if (inView) {
-      videoRef.current.play().catch(() => {});
-      setPlaying(true);
+      videoRef.current.muted = false; // 🔊 sound ON
+      setMuted(false);
+
+      videoRef.current
+        .play()
+        .then(() => setPlaying(true))
+        .catch(() => {});
     } else {
       videoRef.current.pause();
+      videoRef.current.muted = true;
+      setMuted(true);
       setPlaying(false);
     }
   }, [inView]);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
-    videoRef.current.paused
-      ? videoRef.current.play()
-      : videoRef.current.pause();
-    setPlaying(!videoRef.current.paused);
+
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+      setPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setPlaying(false);
+    }
   };
 
   const toggleMute = () => {
     if (!videoRef.current) return;
+
     videoRef.current.muted = !videoRef.current.muted;
     setMuted(videoRef.current.muted);
   };
 
   return (
-    <section ref={ref} className="relative w-full h-auto bg-black">
-      {/* 🎥 VIDEO */}
-      <div className="absolute inset-0 h-full">
-        <video
-          ref={videoRef}
-          src={rsVideo}
-          muted={muted}
-          loop
-          playsInline
-          className="w-full h-screen object-cover"
-        />
-        <div className="absolute inset-0 bg-black/45 pointer-events-none" />
-      </div>
+    <section
+      ref={ref}
+      className="relative w-full max-h-[400px] overflow-hidden bg-black"
+    >
+      {/* 🎥 VIDEO BACKGROUND */}
+      <video
+        ref={videoRef}
+        src={rsVideo}
+        loop
+        playsInline
+        className="w-full h-[400px] object-cover"
+      />
 
-      {/* 📌 CONTENT */}
-      <div className="relative h-full">
-        <div className="sticky top-0 h-screen flex items-center justify-center px-6">
-          <div className="text-center max-w-3xl z-10">
-            <h2 className="text-white text-4xl md:text-6xl font-light tracking-wide">
+      {/* DARK OVERLAY */}
+      <div className="absolute inset-0 bg-black/35 pointer-events-none" />
+
+      {/* CONTENT */}
+      <div className="absolute inset-0 z-10 flex items-end px-2 md:px-10 pb-4">
+        <div className="w-full flex items-end justify-between gap-6">
+          {/* TEXT — LEFT */}
+          <div className="max-w-xl text-white">
+            <h2 className="text-2xl md:text-3xl font-serif tracking-wide leading-tight">
               {title}
             </h2>
-            <p className="text-white/80 text-base md:text-lg">{subtitle}</p>
+            <p className="mt-1 text-xs md:text-sm text-white/70 tracking-widest uppercase">
+              {subtitle}
+            </p>
           </div>
 
-          {/* 🎛️ VERTICAL CONTROLS – RIGHT */}
-          <div className="absolute right-6 bottom-4 flex flex-row gap-2 z-20">
+          {/* CONTROLS — RIGHT */}
+          <div className="flex items-center gap-3">
             <button
               onClick={togglePlay}
-              className="p-3 rounded-full
-              bg-white/20 backdrop-blur-xl border border-white/30
-              text-white hover:bg-white/30 transition"
+              className="
+            flex items-center gap-2 px-4 py-2 rounded-full
+            bg-white/20 backdrop-blur-xl
+            border border-white/30 text-white
+            hover:bg-white/30 transition
+          "
             >
               {playing ? (
-                <PauseIcon className="w-5 h-5" />
+                <PauseIcon className="w-4 h-4" />
               ) : (
-                <PlayIcon className="w-5 h-5" />
+                <PlayIcon className="w-4 h-4" />
               )}
+              <span className="hidden md:inline">
+                {playing ? "Pause" : "Play"}
+              </span>
             </button>
 
             <button
               onClick={toggleMute}
-              className="p-3 rounded-full
-              bg-white/20 backdrop-blur-xl border border-white/30
-              text-white hover:bg-white/30 transition"
+              className="
+            p-2.5 rounded-full
+            bg-white/20 backdrop-blur-xl
+            border border-white/30 text-white
+            hover:bg-white/30 transition
+          "
             >
               {muted ? (
-                <SpeakerXMarkIcon className="w-5 h-5" />
+                <SpeakerXMarkIcon className="w-4 h-4" />
               ) : (
-                <SpeakerWaveIcon className="w-5 h-5" />
+                <SpeakerWaveIcon className="w-4 h-4" />
               )}
             </button>
           </div>

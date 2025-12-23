@@ -3,7 +3,7 @@ import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-100 text-gray-800 md:py-10 py-6 print:hidden">
+    <footer className="bg-gray-900 text-gray-50 md:py-10 py-6 print:hidden">
       <div className="max-w-screen-xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Company Info */}
@@ -11,7 +11,7 @@ export default function Footer() {
             <h4 className="text-lg font-semibold mb-5 tracking-wide text-gray-900">
               Information de Contact
             </h4>
-            <div className="text-sm text-gray-700 space-y-3 leading-relaxed ">
+            <div className="text-sm text-gray-50 space-y-3 leading-relaxed ">
               <p>
                 <strong>Address:</strong> 6 Rue 2 Mars 1934, Hammam-Lif, Tunisia
               </p>
