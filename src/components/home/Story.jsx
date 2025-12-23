@@ -460,7 +460,7 @@ const VideoSlide = ({
               <SpeakerWaveIcon className="w-5 h-5" />
             )}
           </button>
-          {handleDelete && (
+          {isAuthenticated && (
             <button
               onClick={() => handleDelete(slide._id)}
               className="bg-gray-50/70 text-gray-800 rounded-full p-2 transition"

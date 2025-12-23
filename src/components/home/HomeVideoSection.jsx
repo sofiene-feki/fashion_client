@@ -8,6 +8,8 @@ import {
 import { useInView } from "react-intersection-observer";
 import rsVideo from "../../assets/rs.mp4";
 
+const SOUND_KEY = "videoSoundUnlocked";
+
 export default function HomeVideoSection({
   title = "RS MODE EXPERIENCE",
   subtitle = "Scroll to discover our universe",
@@ -23,9 +25,9 @@ export default function HomeVideoSection({
     triggerOnce: false,
   });
 
-  /* ----------------------------------------
-     🔄 SYNC STATE FROM VIDEO
-  ---------------------------------------- */
+  /* -------------------------------------------------
+     🔄 SYNC UI STATE FROM VIDEO (reload safe)
+  ------------------------------------------------- */
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -37,7 +39,7 @@ export default function HomeVideoSection({
     video.addEventListener("pause", syncPlay);
     video.addEventListener("volumechange", syncMute);
 
-    // Initial sync (page reload safe)
+    // initial sync
     syncPlay();
     syncMute();
 
@@ -48,38 +50,62 @@ export default function HomeVideoSection({
     };
   }, []);
 
-  /* ----------------------------------------
-     ▶️ AUTO PLAY + SOUND ON
-  ---------------------------------------- */
+  /* -------------------------------------------------
+     🔓 UNLOCK AUDIO ON FIRST USER INTERACTION
+  ------------------------------------------------- */
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const unlockAudio = () => {
+      video.muted = false;
+      setMuted(false);
+      localStorage.setItem(SOUND_KEY, "true");
+
+      video.play().catch(() => {});
+
+      window.removeEventListener("click", unlockAudio);
+      window.removeEventListener("touchstart", unlockAudio);
+      window.removeEventListener("scroll", unlockAudio);
+    };
+
+    if (!localStorage.getItem(SOUND_KEY)) {
+      window.addEventListener("click", unlockAudio, { once: true });
+      window.addEventListener("touchstart", unlockAudio, { once: true });
+      window.addEventListener("scroll", unlockAudio, { once: true });
+    }
+
+    return () => {
+      window.removeEventListener("click", unlockAudio);
+      window.removeEventListener("touchstart", unlockAudio);
+      window.removeEventListener("scroll", unlockAudio);
+    };
+  }, []);
+
+  /* -------------------------------------------------
+     ▶️ AUTO PLAY / PAUSE ON SCROLL
+  ------------------------------------------------- */
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
     if (inView) {
-      video.muted = false; // 🔊 SOUND ON
-      setMuted(false);
+      const soundUnlocked = localStorage.getItem(SOUND_KEY);
 
-      const playPromise = video.play();
+      video.muted = !soundUnlocked;
+      setMuted(video.muted);
 
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Browser blocked sound autoplay → fallback
-          video.muted = true;
-          setMuted(true);
-          video.play().catch(() => {});
-        });
-      }
+      video.play().catch(() => {});
     } else {
-      // ⬇️ When scrolled past
       video.pause();
       video.muted = true;
       setMuted(true);
     }
   }, [inView]);
 
-  /* ----------------------------------------
+  /* -------------------------------------------------
      🎛 CONTROLS
-  ---------------------------------------- */
+  ------------------------------------------------- */
   const togglePlay = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -92,6 +118,11 @@ export default function HomeVideoSection({
     if (!video) return;
 
     video.muted = !video.muted;
+    setMuted(video.muted);
+
+    if (!video.muted) {
+      localStorage.setItem(SOUND_KEY, "true");
+    }
   };
 
   return (
@@ -106,6 +137,7 @@ export default function HomeVideoSection({
         loop
         playsInline
         preload="metadata"
+        muted
         className="w-full h-[400px] object-cover"
       />
 
@@ -129,12 +161,9 @@ export default function HomeVideoSection({
           <div className="flex items-center gap-3">
             <button
               onClick={togglePlay}
-              className="
-                flex items-center gap-2 px-4 py-2 rounded-full
-                bg-white/20 backdrop-blur-xl
-                border border-white/30 text-white
-                hover:bg-white/30 transition
-              "
+              className="flex items-center gap-2 px-4 py-2 rounded-full
+                bg-white/20 backdrop-blur-xl border border-white/30
+                text-white hover:bg-white/30 transition"
             >
               {playing ? (
                 <PauseIcon className="w-4 h-4" />
@@ -148,12 +177,9 @@ export default function HomeVideoSection({
 
             <button
               onClick={toggleMute}
-              className="
-                p-2.5 rounded-full
-                bg-white/20 backdrop-blur-xl
-                border border-white/30 text-white
-                hover:bg-white/30 transition
-              "
+              className="p-2.5 rounded-full
+                bg-white/20 backdrop-blur-xl border border-white/30
+                text-white hover:bg-white/30 transition"
             >
               {muted ? (
                 <SpeakerXMarkIcon className="w-4 h-4" />
