@@ -39,13 +39,11 @@ export default function NewArrivals() {
     return { ...input, media: normalizedMedia };
   };
 
-  const [filter, setFilter] = useState("homme");
-
   useEffect(() => {
     const fetchNewArrivals = async () => {
       setLoading(true);
       try {
-        const { data } = await getNewArrivals(filter);
+        const { data } = await getNewArrivals("all");
         const normalizedProducts = normalizeMediaSrc(data.products || []);
         setProducts(normalizedProducts);
         console.log(
@@ -60,43 +58,20 @@ export default function NewArrivals() {
     };
 
     fetchNewArrivals();
-  }, [filter]);
+  }, []);
 
   return (
     <div className="mx-auto md:mx-10 py-10">
       {/* ✅ Section Title */}
-      <h2 className="text-3xl md:text-4xl font-semiBold tracking-tight text-gray-900 my-4 text-center">
-        Nouvelle Collection <span className="text-[#87a736]">2025</span>
+      <h2 className="text-2xl md:text-4xl font-semiBold tracking-tight text-gray-900 my-4 text-center">
+        NEW COLLECTION <span className="text-[#87a736]">2026</span>
       </h2>
-
-      {/* ✅ Filter Tabs */}
-      <div className="flex justify-center gap-8 mb-4">
-        {["homme", "Femme", "enfant"].map((category) => (
-          <button
-            key={category}
-            onClick={() => setFilter(category)}
-            className={`text-base md:text-lg font-semibold flex items-center gap-1 transition-colors duration-300
-          ${
-            filter === category
-              ? "text-[#87a736]"
-              : "text-gray-700 hover:text-gray-900"
-          }`}
-          >
-            {category}
-            <ChevronDownIcon
-              className={`w-4 h-4 transition-colors duration-300 ${
-                filter === category ? "text-[#87a736]" : "text-gray-500"
-              }`}
-            />
-          </button>
-        ))}
-      </div>
 
       {/* ✅ Products Grid */}
       {loading ? (
         <LoadingProduct length={isMobile ? 1 : 4} cols={4} />
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4  px-1">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
           {products.map((product) => (
             <Product key={product._id || product.slug} product={product} />
           ))}

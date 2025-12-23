@@ -61,14 +61,14 @@ export default function BestSellers() {
 
   return (
     <div className=" mx-auto md:mx-10 pb-10">
-      <h2 className="text-3xl md:text-4xl font-semiBold tracking-tight text-gray-900 my-4 text-center">
-        Meilleur Vente 2025
+      <h2 className="text-2xl md:text-4xl tracking-tight text-gray-900 my-4 text-center">
+        BEST SELLERS{" "}
       </h2>
 
       {loading ? (
         <LoadingProduct length={isMobile ? 1 : 4} cols={4} />
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 px-1">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 ">
           {products.map((product) => (
             <Product key={product._id || product.slug} product={product} />
           ))}

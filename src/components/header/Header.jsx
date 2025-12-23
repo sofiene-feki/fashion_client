@@ -118,8 +118,8 @@ export default function Header() {
             className={`font-luxury transition-all duration-700 transform text-4xl ${
               isHome
                 ? isScrolled
-                  ? "text-xl scale-75 text-black translate-x-[-85px] md:translate-x-[-520px]"
-                  : "text-4xl md:text-9xl mt-25 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] md:mt-50 text-white scale-100 translate-x-0"
+                  ? "text-xl scale-75 text-black translate-x-[-125px] md:translate-x-[-520px]"
+                  : "text-6xl md:text-9xl mt-20 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] md:mt-50 text-white scale-100 translate-x-0"
                 : "text-xl text-black scale-75 translate-x-[-70px] md:translate-x-[-500px]"
             }`}
           >
@@ -130,7 +130,7 @@ export default function Header() {
         {/* ✅ Navbar Content */}
         <div className="flex md:h-14.5 h-12 px-1 items-center justify-between relative z-10">
           {/* Logo */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center mr-2 gap-1">
             <Link to="/" className="md:flex items-center h-9 md:h-16">
               <img
                 className="h-full w-auto"

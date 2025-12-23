@@ -22,15 +22,15 @@ export default function Home() {
       }}
     >
       <Banner />
-      {/* <NewArrivals /> */}
+      <NewArrivals />
       {/* <SpecialOffer /> */}
       {/* <Packs /> */}
-      <BestSellers />
       <HomeVideoSection
         poster="/images/video-poster.jpg"
         title="RS MODE"
         subtitle="A new vision of elegance"
       />
+      <BestSellers />
 
       <Story />
     </div>

@@ -506,7 +506,7 @@ export default function ProductDetails() {
               <ProductInfoForm product={product} setProduct={setProduct} />
             </>
           ) : (
-            <div dir="rtl">
+            <div>
               {loading ? (
                 <div className="h-8 mb-2 w-3/4 bg-gray-200 rounded-lg animate-pulse"></div>
               ) : (

@@ -144,8 +144,8 @@ export default function Banner() {
               </div>
 
               {/* CONTENT (STATIC – NOT ZOOMED) */}
-              <div className="absolute bottom-0 left-0 w-full flex flex-col items-center justify-center text-center p-6 gap-4">
-                <h2 className="text-xl md:text-2xl font-semibold text-white tracking-wide drop-shadow-lg">
+              <div className="absolute bottom-0 left-0 w-full flex flex-col items-center justify-center text-center p-4 gap-4">
+                <h2 className="text-xl md:text-2xl  text-white tracking-wide drop-shadow-lg">
                   {slide.title}
                 </h2>
 
@@ -153,7 +153,7 @@ export default function Banner() {
                   <button
                     className="
               flex items-center gap-2
-              px-6 py-2 rounded-full
+              px-6 py-2 
               bg-white/20 backdrop-blur-xl
               border border-white/30
               text-white tracking-wide
